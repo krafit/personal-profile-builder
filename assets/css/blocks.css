@@ -1,0 +1,265 @@
+/*
+ * Personal Profile Builder — block styles.
+ *
+ * Shared front-end and editor styles for Talk Query, Project Query,
+ * Talk Embed, and Project Embed blocks.
+ *
+ * All colours use CSS custom properties so themes can override them
+ * via theme.json, a global stylesheet, or an editor stylesheet.
+ * See THEME-GUIDANCE-TALKS.md for the full list of properties.
+ */
+
+/* --- Custom property defaults --- */
+
+:where(.ppb-talk-query, .ppb-project-query, .ppb-talk-embed, .ppb-project-embed) {
+	--ppb-card-bg: #fff;
+	--ppb-card-border: #e0e0e0;
+	--ppb-card-radius: 8px;
+	--ppb-card-padding: 1.25em;
+	--ppb-topic-bg: #f0f0f0;
+	--ppb-topic-color: #444;
+	--ppb-meta-color: #666;
+	--ppb-status-available-bg: #d1e7dd;
+	--ppb-status-available-color: #0f5132;
+	--ppb-status-retired-bg: #f8d7da;
+	--ppb-status-retired-color: #842029;
+	--ppb-badge-bg: #e8e0f0;
+	--ppb-badge-color: #4a3070;
+	--ppb-excerpt-color: #555;
+	--ppb-link-bg: #f0f0f0;
+	--ppb-link-color: #333;
+	--ppb-link-hover-bg: #e0e0e0;
+	--ppb-link-hover-color: #111;
+}
+
+/* --- Shared grid layout --- */
+
+.ppb-talk-query--grid,
+.ppb-project-query--grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fill, minmax( 260px, 1fr ) );
+	gap: 1.5em;
+}
+
+.ppb-talk-query--list,
+.ppb-project-query--list {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+/* --- Compact block style --- */
+
+.is-style-compact.ppb-talk-query--grid,
+.is-style-compact.ppb-project-query--grid {
+	grid-template-columns: repeat( auto-fill, minmax( 200px, 1fr ) );
+	gap: 1em;
+}
+
+.is-style-compact .ppb-talk-query__card,
+.is-style-compact .ppb-project-query__card {
+	padding: 1em;
+}
+
+.is-style-compact .ppb-talk-query__emoji,
+.is-style-compact .ppb-project-query__icon {
+	font-size: 1.5em;
+}
+
+.is-style-compact .ppb-talk-query__title,
+.is-style-compact .ppb-project-query__title {
+	font-size: 0.95em;
+}
+
+/* --- Talk Query / Talk Embed card --- */
+
+.ppb-talk-query__card {
+	padding: var(--ppb-card-padding);
+	border: 1px solid var(--ppb-card-border);
+	border-radius: var(--ppb-card-radius);
+	background: var(--ppb-card-bg);
+}
+
+.ppb-talk-query__emoji {
+	display: block;
+	font-size: 2em;
+	line-height: 1;
+	margin-bottom: 0.4em;
+}
+
+.ppb-talk-query__title {
+	margin: 0 0 0.5em;
+	font-size: 1.1em;
+	line-height: 1.3;
+}
+
+.ppb-talk-query__title a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.ppb-talk-query__title a:hover,
+.ppb-talk-query__title a:focus {
+	text-decoration: underline;
+}
+
+.ppb-talk-query__topics {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4em;
+	margin-bottom: 0.75em;
+}
+
+.ppb-talk-query__topic {
+	display: inline-block;
+	padding: 0.15em 0.6em;
+	border-radius: 9999px;
+	font-size: 0.8em;
+	line-height: 1.4;
+	background: var(--ppb-topic-bg);
+	color: var(--ppb-topic-color);
+}
+
+.ppb-talk-query__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6em;
+	font-size: 0.85em;
+}
+
+.ppb-talk-query__status {
+	display: inline-block;
+	padding: 0.15em 0.6em;
+	border-radius: 9999px;
+	font-size: 0.8em;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.5;
+}
+
+.ppb-talk-query__status--available {
+	background: var(--ppb-status-available-bg);
+	color: var(--ppb-status-available-color);
+}
+
+.ppb-talk-query__status--retired {
+	background: var(--ppb-status-retired-bg);
+	color: var(--ppb-status-retired-color);
+}
+
+.ppb-talk-query__next-date {
+	color: var(--ppb-meta-color);
+}
+
+/* --- Project Query / Project Embed card --- */
+
+.ppb-project-query__card {
+	padding: var(--ppb-card-padding);
+	border: 1px solid var(--ppb-card-border);
+	border-radius: var(--ppb-card-radius);
+	background: var(--ppb-card-bg);
+}
+
+.ppb-project-query__icon {
+	display: block;
+	font-size: 2em;
+	line-height: 1;
+	margin-bottom: 0.4em;
+}
+
+.ppb-project-query__title {
+	margin: 0 0 0.4em;
+	font-size: 1.1em;
+	line-height: 1.3;
+}
+
+.ppb-project-query__title a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.ppb-project-query__title a:hover,
+.ppb-project-query__title a:focus {
+	text-decoration: underline;
+}
+
+.ppb-project-query__badge {
+	display: inline-block;
+	padding: 0.15em 0.6em;
+	margin-bottom: 0.75em;
+	border-radius: 9999px;
+	font-size: 0.8em;
+	font-weight: 600;
+	line-height: 1.4;
+	background: var(--ppb-badge-bg);
+	color: var(--ppb-badge-color);
+}
+
+.ppb-project-query__excerpt {
+	margin: 0;
+	font-size: 0.9em;
+	line-height: 1.5;
+	color: var(--ppb-excerpt-color);
+}
+
+/* --- List layout adjustments --- */
+
+.ppb-talk-query--list .ppb-talk-query__card,
+.ppb-project-query--list .ppb-project-query__card {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em 1em;
+	border-radius: 4px;
+}
+
+.ppb-talk-query--list .ppb-talk-query__emoji,
+.ppb-project-query--list .ppb-project-query__icon {
+	font-size: 1.5em;
+	margin-bottom: 0;
+}
+
+.ppb-talk-query--list .ppb-talk-query__title,
+.ppb-project-query--list .ppb-project-query__title {
+	margin: 0;
+	flex: 1 1 200px;
+}
+
+.ppb-talk-query--list .ppb-talk-query__topics {
+	margin-bottom: 0;
+}
+
+/* --- Talk Embed occurrence details --- */
+
+.ppb-talk-embed__event,
+.ppb-talk-embed__location {
+	color: var(--ppb-meta-color);
+}
+
+.ppb-talk-embed__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	margin-top: 0.75em;
+	padding-top: 0.75em;
+	border-top: 1px solid var(--ppb-card-border);
+}
+
+.ppb-talk-embed__link {
+	display: inline-block;
+	padding: 0.25em 0.75em;
+	border-radius: 4px;
+	font-size: 0.85em;
+	line-height: 1.4;
+	text-decoration: none;
+	background: var(--ppb-link-bg);
+	color: var(--ppb-link-color);
+}
+
+.ppb-talk-embed__link:hover,
+.ppb-talk-embed__link:focus {
+	background: var(--ppb-link-hover-bg);
+	color: var(--ppb-link-hover-color);
+}

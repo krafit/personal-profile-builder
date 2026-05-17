@@ -1,0 +1,171 @@
+/*
+ * Personal Profile Builder — admin styles.
+ *
+ * Loaded on talk and project edit screens, and on the talks list table.
+ * Uses WordPress admin design tokens (--wp-admin-theme-color, etc.)
+ * where possible so it inherits the user's chosen colour scheme.
+ */
+
+/* --- Generic meta box fields --- */
+
+.ppb-meta-box .ppb-field {
+	margin: 0 0 16px;
+}
+
+.ppb-meta-box .ppb-field:last-child {
+	margin-bottom: 0;
+}
+
+.ppb-meta-box .ppb-field__label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.ppb-meta-box .ppb-field__input--narrow {
+	width: 160px;
+	max-width: 100%;
+}
+
+.ppb-meta-box .description {
+	display: block;
+	margin-top: 4px;
+	color: #50575e;
+	font-style: italic;
+}
+
+.ppb-meta-box--status .ppb-field--radio {
+	margin: 0 0 8px;
+}
+
+.ppb-meta-box--status .ppb-field--radio label {
+	display: block;
+	cursor: pointer;
+}
+
+/* --- Occurrences UI --- */
+
+.ppb-occurrences__rows {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin: 12px 0;
+}
+
+.ppb-occurrence {
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px;
+	background: #fff;
+	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
+}
+
+.ppb-occurrence__grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 200px, 1fr ) );
+	gap: 12px 16px;
+}
+
+.ppb-occurrence__grid .ppb-field {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.ppb-occurrence__grid .ppb-field__label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+	font-size: 12px;
+	color: #1d2327;
+}
+
+.ppb-occurrence__date {
+	max-width: 220px;
+}
+
+.ppb-field__row {
+	display: flex;
+	gap: 6px;
+	align-items: flex-start;
+}
+
+.ppb-field__row .widefat {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.ppb-occurrence__upload {
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.ppb-occurrence__url {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px dashed #dcdcde;
+	font-size: 13px;
+}
+
+.ppb-occurrence__url-label {
+	font-weight: 600;
+	color: #50575e;
+}
+
+.ppb-occurrence__url-display {
+	flex: 1 1 280px;
+	min-width: 0;
+	padding: 4px 8px;
+	background: #f6f7f7;
+	border-radius: 3px;
+	font-size: 12px;
+	color: #50575e;
+	overflow-wrap: anywhere;
+}
+
+.ppb-occurrence__url-display.is-active {
+	color: #1d2327;
+	background: #f0f6fc;
+}
+
+.ppb-occurrence__actions {
+	margin-top: 8px;
+	text-align: right;
+}
+
+.ppb-occurrences__actions {
+	margin: 16px 0 0;
+}
+
+/* --- Talks list table --- */
+
+.column-ppb_status,
+.column-ppb_occurrence_count,
+.column-ppb_next_date {
+	width: 12%;
+}
+
+.ppb-status-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 9999px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.6;
+}
+
+.ppb-status-badge--available {
+	background: #d1e7dd;
+	color: #0f5132;
+}
+
+.ppb-status-badge--retired {
+	background: #f8d7da;
+	color: #842029;
+}

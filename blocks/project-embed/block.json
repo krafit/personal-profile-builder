@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "personal-profile-builder/project-embed",
+	"version": "1.0.0",
+	"title": "Project Embed",
+	"category": "personal-profile-builder",
+	"icon": "portfolio",
+	"description": "Display a single project as a card. Pick any published project to feature it on a page or post.",
+	"keywords": [ "project", "portfolio", "embed", "single" ],
+	"textdomain": "personal-profile-builder",
+	"attributes": {
+		"postId": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"supports": {
+		"align": [ "wide" ],
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}

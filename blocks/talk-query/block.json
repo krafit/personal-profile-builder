@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "personal-profile-builder/talk-query",
+	"version": "1.1.0",
+	"title": "Talk Query",
+	"category": "personal-profile-builder",
+	"icon": "microphone",
+	"description": "Display a queryable grid or list of talks, filterable by topic and status.",
+	"keywords": [ "talks", "speaking", "conferences", "portfolio" ],
+	"textdomain": "personal-profile-builder",
+	"attributes": {
+		"topic": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "number"
+			}
+		},
+		"status": {
+			"type": "string",
+			"default": "",
+			"enum": [ "", "available", "retired" ]
+		},
+		"maxItems": {
+			"type": "number",
+			"default": 6
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "date",
+			"enum": [ "date", "title", "next_occurrence" ]
+		},
+		"layout": {
+			"type": "string",
+			"default": "grid",
+			"enum": [ "grid", "list" ]
+		},
+		"retiredLast": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"styles": [
+		{
+			"name": "default",
+			"label": "Default",
+			"isDefault": true
+		},
+		{
+			"name": "compact",
+			"label": "Compact"
+		}
+	],
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}

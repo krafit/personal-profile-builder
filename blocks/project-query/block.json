@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "personal-profile-builder/project-query",
+	"version": "1.1.0",
+	"title": "Project Query",
+	"category": "personal-profile-builder",
+	"icon": "portfolio",
+	"description": "Display a queryable grid or list of projects, filterable by type.",
+	"keywords": [ "projects", "portfolio", "work" ],
+	"textdomain": "personal-profile-builder",
+	"attributes": {
+		"type": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "number"
+			}
+		},
+		"maxItems": {
+			"type": "number",
+			"default": 6
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "date",
+			"enum": [ "date", "title" ]
+		},
+		"layout": {
+			"type": "string",
+			"default": "grid",
+			"enum": [ "grid", "list" ]
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"styles": [
+		{
+			"name": "default",
+			"label": "Default",
+			"isDefault": true
+		},
+		{
+			"name": "compact",
+			"label": "Compact"
+		}
+	],
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
