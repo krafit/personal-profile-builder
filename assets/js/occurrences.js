@@ -11,7 +11,7 @@
 	'use strict';
 
 	const CONTAINER_SELECTOR = '[data-ppb-occurrences]';
-	const FIELDS = [ 'date', 'event_name', 'location', 'event_url', 'slides_url', 'recording_url' ];
+	const FIELDS = [ 'date', 'event_name', 'location', 'language', 'event_url', 'slides_url', 'recording_url' ];
 
 	/**
 	 * Validate a YYYY-MM-DD string as a real Gregorian date.
@@ -98,6 +98,8 @@
 		const dateInput = row.querySelector( '[data-ppb-field="date"]' );
 		const display = row.querySelector( '[data-ppb-url-display]' );
 		const copyBtn = row.querySelector( '[data-ppb-copy]' );
+		const qrToggle = row.querySelector( '[data-ppb-qr-toggle]' );
+		const qrDisplay = row.querySelector( '[data-ppb-qr-display]' );
 
 		if ( ! dateInput || ! display ) {
 			return;
@@ -113,6 +115,14 @@
 				copyBtn.hidden = true;
 			}
 
+			if ( qrToggle ) {
+				qrToggle.hidden = true;
+			}
+
+			if ( qrDisplay ) {
+				qrDisplay.hidden = true;
+			}
+
 			return;
 		}
 
@@ -124,6 +134,22 @@
 		if ( copyBtn ) {
 			copyBtn.hidden = false;
 			copyBtn.dataset.ppbCopyTarget = fullUrl;
+		}
+
+		if ( qrToggle ) {
+			qrToggle.hidden = false;
+
+			// If the URL changed while a QR was showing, hide the
+			// now-stale QR so it isn't mistaken for the new date.
+			if (
+				qrDisplay
+				&& ! qrDisplay.hidden
+				&& qrToggle.dataset.ppbQrUrl !== fullUrl
+			) {
+				qrDisplay.hidden = true;
+			}
+
+			qrToggle.dataset.ppbQrUrl = fullUrl;
 		}
 	}
 
@@ -260,6 +286,73 @@
 	}
 
 	/**
+	 * Generate and display a QR code for an occurrence URL.
+	 *
+	 * @param {HTMLElement} row The occurrence row
+	 * @param {string} url The URL to encode
+	 */
+	function showQrCode( row, url ) {
+		const display = row.querySelector( '[data-ppb-qr-display]' );
+		const svgContainer = row.querySelector( '[data-ppb-qr-svg]' );
+		const downloadLink = row.querySelector(
+			'[data-ppb-qr-download]'
+		);
+
+		if ( ! display || ! svgContainer ) {
+			return;
+		}
+
+		if ( typeof QRCode === 'undefined' ) {
+			return;
+		}
+
+		var qr = new QRCode( {
+			content: url,
+			padding: 4,
+			width: 200,
+			height: 200,
+			color: '#000000',
+			background: '#ffffff',
+			ecl: 'M',
+			join: true,
+			container: 'svg-viewbox',
+			xmlDeclaration: false
+		} );
+
+		var svgString = qr.svg();
+
+		svgContainer.innerHTML = svgString;
+		display.hidden = false;
+
+		if ( downloadLink ) {
+			// Revoke any previous object URL on this link to avoid leaks.
+			if ( downloadLink.dataset.ppbBlobUrl ) {
+				URL.revokeObjectURL( downloadLink.dataset.ppbBlobUrl );
+			}
+
+			var fileContents = '<?xml version="1.0" encoding="UTF-8"?>\n'
+				+ svgString;
+			var blob = new Blob(
+				[ fileContents ],
+				{ type: 'image/svg+xml' }
+			);
+			var blobUrl = URL.createObjectURL( blob );
+			var dateInput = row.querySelector(
+				'[data-ppb-field="date"]'
+			);
+			var datePart = dateInput
+				? toCompactDate( dateInput.value )
+				: '';
+
+			downloadLink.href = blobUrl;
+			downloadLink.download = 'qr-'
+				+ ( datePart !== '' ? datePart : 'talk' )
+				+ '.svg';
+			downloadLink.dataset.ppbBlobUrl = blobUrl;
+		}
+	}
+
+	/**
 	 * Wire up event delegation on a container.
 	 *
 	 * @param {HTMLElement} container
@@ -329,6 +422,31 @@
 			if ( target.matches( '[data-ppb-upload-slides]' ) ) {
 				event.preventDefault();
 				openSlidesUploader( target, container );
+
+				return;
+			}
+
+			if ( target.matches( '[data-ppb-qr-toggle]' ) ) {
+				event.preventDefault();
+				const row = target.closest( '[data-ppb-occurrence]' );
+				const url = target.dataset.ppbQrUrl || '';
+
+				if ( row && url !== '' ) {
+					showQrCode( row, url );
+				}
+
+				return;
+			}
+
+			if ( target.matches( '[data-ppb-qr-close]' ) ) {
+				event.preventDefault();
+				const qrDisplay = target.closest(
+					'[data-ppb-qr-display]'
+				);
+
+				if ( qrDisplay ) {
+					qrDisplay.hidden = true;
+				}
 			}
 		} );
 	}

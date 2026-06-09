@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Personal_Profile_Builder\Admin;
 
 use Personal_Profile_Builder\Meta;
+use Personal_Profile_Builder\MSLS_Integration;
 use Personal_Profile_Builder\Post_Types;
 use WP_Post;
 
@@ -84,9 +85,17 @@ final class Occurrences_UI {
 			PERSONAL_PROFILE_BUILDER_VERSION
 		);
 		\wp_enqueue_script(
+			'ppb-qrcode-svg',
+			PERSONAL_PROFILE_BUILDER_URL
+				. 'assets/js/vendor/qrcode-svg.min.js',
+			[],
+			'1.1.0',
+			true
+		);
+		\wp_enqueue_script(
 			'ppb-occurrences',
 			PERSONAL_PROFILE_BUILDER_URL . 'assets/js/occurrences.js',
-			[ 'jquery' ],
+			[ 'jquery', 'ppb-qrcode-svg' ],
 			PERSONAL_PROFILE_BUILDER_VERSION,
 			true
 		);
@@ -107,6 +116,18 @@ final class Occurrences_UI {
 				),
 				'useFile' => \__(
 					'Use this file',
+					'personal-profile-builder'
+				),
+				'qrCode' => \__(
+					'QR Code',
+					'personal-profile-builder'
+				),
+				'downloadQr' => \__(
+					'Download SVG',
+					'personal-profile-builder'
+				),
+				'closeQr' => \__(
+					'Close',
 					'personal-profile-builder'
 				),
 			]
@@ -187,6 +208,19 @@ final class Occurrences_UI {
 				</label>
 				<label class="ppb-field">
 					<span class="ppb-field__label">
+						<?php echo \esc_html__( 'Language', 'personal-profile-builder' ); ?>
+					</span>
+					<select class="widefat" data-ppb-field="language">
+						<option value=""><?php echo \esc_html__( '— No language —', 'personal-profile-builder' ); ?></option>
+						<?php foreach ( MSLS_Integration::locale_choices() as $code => $label ) : ?>
+							<option value="<?php echo \esc_attr( $code ); ?>">
+								<?php echo \esc_html( $label ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+				<label class="ppb-field">
+					<span class="ppb-field__label">
 						<?php echo \esc_html__( 'Event URL', 'personal-profile-builder' ); ?>
 					</span>
 					<input type="url"
@@ -233,6 +267,25 @@ final class Occurrences_UI {
 					hidden>
 					<?php echo \esc_html__( 'Copy URL', 'personal-profile-builder' ); ?>
 				</button>
+				<button type="button"
+					class="button button-small ppb-occurrence__qr-toggle"
+					data-ppb-qr-toggle
+					hidden>
+					<?php echo \esc_html__( 'QR Code', 'personal-profile-builder' ); ?>
+				</button>
+			</div>
+			<div class="ppb-occurrence__qr" data-ppb-qr-display hidden>
+				<div class="ppb-occurrence__qr-svg" data-ppb-qr-svg></div>
+				<a class="button button-small"
+					data-ppb-qr-download
+					download="qr-code.svg">
+					<?php echo \esc_html__( 'Download SVG', 'personal-profile-builder' ); ?>
+				</a>
+				<button type="button"
+					class="button-link ppb-occurrence__qr-close"
+					data-ppb-qr-close>
+					<?php echo \esc_html__( 'Close', 'personal-profile-builder' ); ?>
+				</button>
 			</div>
 			<div class="ppb-occurrence__actions">
 				<button type="button"
@@ -261,8 +314,8 @@ final class Occurrences_UI {
 			return;
 		}
 		
-		$raw = isset( $_POST[ self::FIELD_NAME ] )
-			? \wp_unslash( (string) $_POST[ self::FIELD_NAME ] )
+		$raw = isset( $_POST[ self::FIELD_NAME ] ) && \is_string( $_POST[ self::FIELD_NAME ] )
+			? \wp_unslash( $_POST[ self::FIELD_NAME ] )
 			: '';
 		$sanitised = Meta::sanitize_occurrences_json( $raw );
 		

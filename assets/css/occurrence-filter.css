@@ -1,0 +1,77 @@
+/*
+ * Personal Profile Builder — occurrence language filter styles.
+ *
+ * Loaded only when the front-end occurrence list renders its filter
+ * pill row (more than one distinct language present, filter UI not
+ * disabled). All selectors are scoped under .ppb-occurrences.
+ *
+ * Themes can override appearance via the following CSS custom
+ * properties on .ppb-occurrences (or any ancestor):
+ *
+ *   --ppb-occurrence-filter-gap       Gap between pills (default 0.5em)
+ *   --ppb-occurrence-pill-bg          Pill background (default #f0f0f1)
+ *   --ppb-occurrence-pill-bg-active   Active pill background (default #2271b1)
+ *   --ppb-occurrence-pill-fg          Pill text colour (default inherit)
+ *   --ppb-occurrence-pill-fg-active   Active pill text colour (default #fff)
+ *   --ppb-occurrence-pill-radius      Pill corner radius (default 999px)
+ */
+
+.ppb-occurrences__filter {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var( --ppb-occurrence-filter-gap, 0.5em );
+	margin: 0 0 1em;
+}
+
+.ppb-occurrences__filter-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	padding: 0.3em 0.85em;
+	border: 1px solid transparent;
+	border-radius: var( --ppb-occurrence-pill-radius, 999px );
+	background: var( --ppb-occurrence-pill-bg, #f0f0f1 );
+	color: var( --ppb-occurrence-pill-fg, inherit );
+	font: inherit;
+	font-size: 0.9em;
+	line-height: 1.2;
+	cursor: pointer;
+}
+
+.ppb-occurrences__filter-pill:hover,
+.ppb-occurrences__filter-pill:focus {
+	border-color: var( --ppb-occurrence-pill-bg-active, #2271b1 );
+}
+
+.ppb-occurrences__filter-pill[ data-active="true" ] {
+	background: var( --ppb-occurrence-pill-bg-active, #2271b1 );
+	color: var( --ppb-occurrence-pill-fg-active, #fff );
+	cursor: default;
+}
+
+.ppb-occurrences__filter-flag {
+	width: 1em;
+	height: auto;
+	display: block;
+}
+
+.ppb-occurrences__language {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3em;
+	margin-left: 0.5em;
+	padding: 0.1em 0.5em;
+	border-radius: var( --ppb-occurrence-pill-radius, 999px );
+	background: var( --ppb-occurrence-pill-bg, #f0f0f1 );
+	font-size: 0.85em;
+}
+
+.ppb-occurrences__language-flag {
+	width: 0.9em;
+	height: auto;
+	display: block;
+}
+
+.ppb-occurrences__language-name {
+	font-weight: normal;
+}

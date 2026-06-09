@@ -7,6 +7,7 @@ use Personal_Profile_Builder\Admin\List_Table_Filters;
 use Personal_Profile_Builder\Admin\Occurrences_UI;
 use Personal_Profile_Builder\Admin\Project_Meta_Boxes;
 use Personal_Profile_Builder\Admin\Settings;
+use Personal_Profile_Builder\Admin\Sync_Meta_Box;
 use Personal_Profile_Builder\Admin\Talk_Meta_Boxes;
 use Personal_Profile_Builder\Blocks\Project_Embed;
 use Personal_Profile_Builder\Blocks\Project_Query;
@@ -63,6 +64,8 @@ final class Plugin {
 			'init',
 			[ Project_Embed::class, 'register' ]
 		);
+		\add_action( 'init', [ Upgrade::class, 'run_pending' ], 7 );
+		\add_action( 'init', [ Meta::class, 'init_runtime_hooks' ], 8 );
 		\add_action( 'wp_loaded', [ $this, 'maybe_flush_rewrites' ], 9999 );
 		\add_filter(
 			'block_categories_all',
@@ -81,6 +84,8 @@ final class Plugin {
 		
 		Occurrences::register();
 		Organiser_View::register();
+		Occurrence_Sync::register();
+		Occurrence_Redirect::register();
 		Rest_Api::register();
 		
 		if ( \is_admin() ) {
@@ -89,6 +94,7 @@ final class Plugin {
 			Project_Meta_Boxes::init();
 			Occurrences_UI::init();
 			List_Table_Filters::init();
+			Sync_Meta_Box::init();
 		}
 	}
 	

@@ -1,0 +1,19 @@
+{
+  "translation-revision-date": "2026-05-21 00:00+0000",
+  "generator": "hand-crafted",
+  "source": "assets/js/sync-meta-box.js",
+  "domain": "messages",
+  "locale_data": {
+    "messages": {
+      "": {
+        "domain": "messages",
+        "lang": "de_DE",
+        "plural-forms": "nplurals=2; plural=(n != 1);"
+      },
+      "Working…": ["Wird ausgeführt…"],
+      "Done. Reloading…": ["Erledigt. Seite wird neu geladen…"],
+      "The action could not be completed.": ["Die Aktion konnte nicht abgeschlossen werden."],
+      "Missing post ID.": ["Beitrags-ID fehlt."]
+    }
+  }
+}

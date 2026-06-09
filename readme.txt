@@ -2,9 +2,9 @@
 Contributors: krafit
 Tags: talks, speaking, conferences, portfolio, projects
 Requires at least: 6.4
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,6 @@ Personal Profile Builder adds two custom post types — **Talks** and **Projects
 * Speaker profile settings page for your bio and avatar.
 * Four editor blocks: Talk Query, Project Query, Talk Embed, and Project Embed.
 * Server-rendered blocks with `theme.json` support for colours, spacing, and typography.
-* Complete German (de_DE) translation.
 
 == Installation ==
 
@@ -45,6 +44,11 @@ Yes. The plugin registers stable meta keys and post types that any theme can rea
 Plugin options are removed. Your talks, projects, and taxonomy terms stay in the database.
 
 == Changelog ==
+
+= 1.7.0 =
+* QR codes for talk occurrences: a "QR Code" button next to each shareable URL generates an SVG QR code inline, with a download link.
+* **Per-occurrence language field** — each occurrence row may now carry a WordPress locale code (e.g. `de_DE`). Surfaced in the row UI as a dropdown, on the front-end as a pill, and in the talks list table as a new "Languages" column.
+* Hardens occurrence data handling against malformed input (prevents a possible fatal error and a PHP warning, and rejects invalid dates on save).
 
 = 1.6.2 =
 * Talk Embed and Project Embed blocks no longer use `display: grid`. A single card now renders at full width.

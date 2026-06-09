@@ -7,6 +7,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.7.0] — 2026-05-21
+
+### Added
+
+- **QR codes for talk occurrences.** Each occurrence row in the admin UI has a "QR Code" button next to the shareable URL. Clicking it generates an SVG QR code inline using the bundled [qrcode-svg](https://github.com/papnkukn/qrcode-svg) library (MIT, pure JavaScript, no external services). The QR encodes the occurrence URL and can be downloaded as an SVG file. The inline preview hides itself when the occurrence date changes, and the downloaded `.svg` includes a proper XML declaration while the inline markup omits it (so it embeds correctly in the editor DOM).
+- Bundled `qrcode-svg` v1.1.0 at `assets/js/vendor/qrcode-svg.min.js` with its MIT license file.
+- **Per-occurrence language field.** Each row in `_talk_occurrences` may carry an optional `language` key holding a WordPress locale code (e.g. `de_DE`). Surfaced in the admin row UI as a dropdown, in the front-end occurrence list as a pill, and in the talks list table as a new "Languages" column. Read defensively (`$row['language'] ?? ''`).
+- **Cross-subsite occurrence sync.** On a WordPress multisite running [Multisite Language Switcher](https://github.com/lloc/Multisite-Language-Switcher), saving the occurrence list on one talk propagates the same list to every MSLS-linked translation. Last-write-wins with empty-target protection (an empty sibling adopts the source; a populated sibling can only be overwritten by an explicit save). Re-entrancy is guarded by a static flag plus a hash-equality short-circuit. A new "Occurrence sync status" meta box on the talk edit screen flags divergence between linked talks and offers Push / Pull / Merge reconciliation actions.
+- **Occurrence URL language redirect.** When a visitor opens `/talk/<slug>/YYYYMMDD` and the occurrence's `language` differs from the current subsite's locale, the visitor is bounced (`302`) to the matching-language subsite's occurrence URL — query strings preserved, so `?view=organiser` round-trips correctly. New `ppb_msls_redirect_target` filter lets themes/site code override the URL.
+- **Front-end language filter.** When an occurrence list contains more than one distinct language, a row of toggle pills appears above the list. Filter state is reflected in the URL hash (`#lang=de_DE`), so a filtered view is shareable. Suppressible via the `ppb_occurrence_filter_enabled` filter (default `true`) or `Template_Tags::occurrence_list( [ 'with_filter' => false ] )`.
+- **REST extensions.** Occurrence objects gain `language`, `language_name` (when set), and `language_flag_url` (when MSLS is available). New read-only route `personal-profile-builder/v1/talks/<id>/sync-status` mirrors the data behind the reconciliation meta box.
+- **WP-CLI command.** `wp ppb sync-occurrences <talk_id>` (with optional `--source=<locale>` or `--merge`) drives the same fan-out / pull / merge logic from the command line. Useful after migrations or backup restores.
+- **Internal: `MSLS_Integration::allowed_locales()`** — flat list of locale codes for membership testing in validation paths. Public API but primarily used by sanitisers and migrations that don't need labels.
+- German translation updated with new strings.
+
+### Changed
+
+- **`_talk_language` is now locale-validated and multi-value.** The talk-level language field, free-form since 1.2.0, now accepts only WordPress locale codes (e.g. `de_DE`). It is also registered with `single => false` — a talk can be given in multiple languages, and reads return an array via `get_post_meta( $id, '_talk_language', false )`. The block editor sidebar surfaces it as a `FormTokenField` (the component used for post tags). Free-form values from earlier saves are preserved on upgrade in a temporary `_talk_language_legacy` meta key and surfaced to the editor as a notice asking the user to pick the equivalent locale(s). The legacy meta key will be removed in 1.8.0.
+- **Theme implications for `_talk_language`:** if your theme renders this meta key directly, two things changed at once. (a) The value is now a locale code rather than free text — wrap in `format_code_lang()` to get a human-readable name. (b) The value is now an array — use `get_post_meta( $id, '_talk_language', false )` and iterate. See `THEME-MIGRATION.md` for a one-liner backward-compatible read pattern.
+
+### Hardened
+
+- `Query_Helpers::get_occurrences()` drops non-array rows before its typed sort/filter callbacks, preventing a possible `TypeError` under `strict_types` on malformed occurrence JSON (matching the meta-override filter's existing handling).
+- The occurrence save handler verifies the posted value is a string before processing, avoiding an "Array to string conversion" warning on crafted input.
+- The occurrence sanitiser now drops any row whose date is not a real Gregorian date, consistent with how URLs are validated at render time.
+- Language names (e.g. "English", "German") shown for occurrences now render in the active locale. `format_code_lang()` returns hard-coded English names, so the result is passed through WordPress core's own `default` text domain via `translate()`. This reuses core's existing language-name translations rather than maintaining a plugin-side list; names without a core translation fall back to English.
+
+### Implementation notes
+
+`MSLS_Integration::locale_choices()` and `MSLS_Integration::locale_name()` lazy-load `wp-admin/includes/ms.php` on demand, so the `format_code_lang()` function they depend on is available on front-end requests as well as admin requests. The validation paths bypass labels entirely and use `allowed_locales()` instead. Because `format_code_lang()` returns untranslated English names, both label-producing methods pass the result through `translate( $name, 'default' )` so language names follow the active locale using core's own catalog.
+
+All cross-subsite operations introduced by the sync feature follow the practices outlined at <https://epiph.yt/en/blog/2025/beware-when-using-switch_to_blog/>:
+
+- Every `switch_to_blog()` paired with `restore_current_blog()` inside the same loop iteration, in a `try`/`finally`.
+- Cross-blog calls limited to `get_post_meta()` and `update_post_meta()`.
+- Debug-mode assertion catches developer regressions if the blog stack ever leaves the fan-out imbalanced.
+
 ## [1.6.2] — 2026-05-17
 
 ### Fixed

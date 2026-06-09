@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Personal Profile Builder 1.6.1\n"
+"Project-Id-Version: Personal Profile Builder 1.7.0\n"
 "Report-Msgid-Bugs-To: https://simon.blog\n"
 "POT-Creation-Date: 2026-05-15 00:00+0000\n"
 "PO-Revision-Date: 2026-05-15 00:00+0000\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: hand-crafted\n"
 "X-Domain: personal-profile-builder\n"
+"X-Generator: hand-crafted\n"
 
 msgctxt "post type general name"
 msgid "Talks"
@@ -220,7 +220,8 @@ msgid "Talk booking status (available, retired, or empty)."
 msgstr "Buchungsstatus des Vortrags (verfügbar, eingestellt oder leer)."
 
 msgid "JSON-encoded list of occurrences when this talk was given."
-msgstr "JSON-codierte Liste der Termine, an denen dieser Vortrag gehalten wurde."
+msgstr ""
+"JSON-codierte Liste der Termine, an denen dieser Vortrag gehalten wurde."
 
 msgid "External URL the project lives at."
 msgstr "Externe URL des Projekts."
@@ -240,14 +241,20 @@ msgstr "Enddatum des Projekts (JJJJ-MM-TT). Leer für laufende Projekte."
 msgid "Speaker Profile"
 msgstr "Sprecherprofil"
 
-msgid "These details power the organiser-facing info box that appears when ?view=organiser is appended to a talk URL."
-msgstr "Diese Angaben werden in der Infobox für Veranstalter angezeigt, die bei Aufruf einer Vortrags-URL mit ?view=organiser erscheint."
+msgid ""
+"These details power the organiser-facing info box that appears when "
+"?view=organiser is appended to a talk URL."
+msgstr ""
+"Diese Angaben werden in der Infobox für Veranstalter angezeigt, die bei "
+"Aufruf einer Vortrags-URL mit ?view=organiser erscheint."
 
 msgid "Speaker bio"
 msgstr "Biografie"
 
 msgid "Short biography shown alongside your avatar to event organisers."
-msgstr "Kurze Biografie, die Veranstaltern zusammen mit deinem Avatar angezeigt wird."
+msgstr ""
+"Kurze Biografie, die Veranstaltern zusammen mit deinem Avatar angezeigt "
+"wird."
 
 msgid "Speaker bio (HTML allowed)."
 msgstr "Biografie (HTML erlaubt)."
@@ -282,11 +289,17 @@ msgstr "Dieses Bild verwenden"
 msgid "Occurrences"
 msgstr "Termine"
 
-msgid "Each occurrence becomes a shareable URL of the form /talk/<slug>/YYYYMMDD. Empty fields fall back to the defaults above."
-msgstr "Jeder Termin erzeugt eine teilbare URL in der Form /talk/<slug>/JJJJMMTT. Leere Felder werden mit den oben festgelegten Standardwerten befüllt."
+msgid ""
+"Each occurrence becomes a shareable URL of the form /talk/<slug>/YYYYMMDD. "
+"Empty fields fall back to the defaults above."
+msgstr ""
+"Jeder Termin erzeugt eine teilbare URL in der Form /talk/<slug>/JJJJMMTT. "
+"Leere Felder werden mit den oben festgelegten Standardwerten befüllt."
 
-msgid "Each occurrence becomes a shareable URL of the form /talk/<slug>/YYYYMMDD."
-msgstr "Jeder Termin erzeugt eine teilbare URL in der Form /talk/<slug>/JJJJMMTT."
+msgid ""
+"Each occurrence becomes a shareable URL of the form /talk/<slug>/YYYYMMDD."
+msgstr ""
+"Jeder Termin erzeugt eine teilbare URL in der Form /talk/<slug>/JJJJMMTT."
 
 msgid "Upload"
 msgstr "Hochladen"
@@ -369,8 +382,11 @@ msgstr "Persönliches Profil"
 msgid "Talk Query"
 msgstr "Vortragsabfrage"
 
-msgid "Display a queryable grid or list of talks, filterable by topic and status."
-msgstr "Zeigt ein filterbares Raster oder eine Liste von Vorträgen an, nach Thema und Status filterbar."
+msgid ""
+"Display a queryable grid or list of talks, filterable by topic and status."
+msgstr ""
+"Zeigt ein filterbares Raster oder eine Liste von Vorträgen an, nach Thema "
+"und Status filterbar."
 
 msgid "Default"
 msgstr "Standard"
@@ -416,19 +432,23 @@ msgid "List"
 msgstr "Liste"
 
 msgid "No talks found. Adjust the filters or add some talks."
-msgstr "Keine Vorträge gefunden. Passe die Filter an oder erstelle neue Vorträge."
+msgstr ""
+"Keine Vorträge gefunden. Passe die Filter an oder erstelle neue Vorträge."
 
 msgid "Project Query"
 msgstr "Projektabfrage"
 
 msgid "Display a queryable grid or list of projects, filterable by type."
-msgstr "Zeigt ein filterbares Raster oder eine Liste von Projekten an, nach Art filterbar."
+msgstr ""
+"Zeigt ein filterbares Raster oder eine Liste von Projekten an, nach Art "
+"filterbar."
 
 msgid "Project types"
 msgstr "Projektarten"
 
 msgid "No projects found. Adjust the filters or add some projects."
-msgstr "Keine Projekte gefunden. Passe die Filter an oder erstelle neue Projekte."
+msgstr ""
+"Keine Projekte gefunden. Passe die Filter an oder erstelle neue Projekte."
 
 msgid "Talk details"
 msgstr "Vortragsdetails"
@@ -572,7 +592,8 @@ msgid "Search for a talk…"
 msgstr "Vortrag suchen …"
 
 msgid "Talk not found. It may have been deleted or unpublished."
-msgstr "Vortrag nicht gefunden. Er wurde möglicherweise gelöscht oder zurückgezogen."
+msgstr ""
+"Vortrag nicht gefunden. Er wurde möglicherweise gelöscht oder zurückgezogen."
 
 msgid "Project Embed"
 msgstr "Projekt einbetten"
@@ -584,7 +605,8 @@ msgid "Search for a project…"
 msgstr "Projekt suchen …"
 
 msgid "Project not found. It may have been deleted or unpublished."
-msgstr "Projekt nicht gefunden. Es wurde möglicherweise gelöscht oder zurückgezogen."
+msgstr ""
+"Projekt nicht gefunden. Es wurde möglicherweise gelöscht oder zurückgezogen."
 
 msgid "Occurrence"
 msgstr "Termin"
@@ -592,8 +614,12 @@ msgstr "Termin"
 msgid "None (link to talk page)"
 msgstr "Keiner (Link zur Vortragsseite)"
 
-msgid "Optionally link to a specific occurrence and show its slides, recording, and event URL."
-msgstr "Optional einen bestimmten Termin verlinken und dessen Folien, Aufzeichnung und Veranstaltungs-URL anzeigen."
+msgid ""
+"Optionally link to a specific occurrence and show its slides, recording, and"
+" event URL."
+msgstr ""
+"Optional einen bestimmten Termin verlinken und dessen Folien, Aufzeichnung "
+"und Veranstaltungs-URL anzeigen."
 
 msgid "Slides"
 msgstr "Folien"
@@ -603,3 +629,124 @@ msgstr "Aufzeichnung"
 
 msgid "Event"
 msgstr "Veranstaltung"
+
+# 1.7.0 — Multilingual occurrences
+# "Language" is already defined above (1.2.0).
+msgid "— No language —"
+msgstr "— Keine Sprache —"
+
+msgid "Languages"
+msgstr "Sprachen"
+
+msgid "No languages set"
+msgstr "Keine Sprachen festgelegt"
+
+msgid "Unspecified"
+msgstr "Nicht angegeben"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "Show occurrences in:"
+msgstr "Termine anzeigen in:"
+
+msgid ""
+"Languages this talk is given in. Pick one or more from the suggestions."
+msgstr ""
+"Sprachen, in denen dieser Vortrag gehalten wird. Eine oder mehrere aus den "
+"Vorschlägen auswählen."
+
+msgid "Add a language…"
+msgstr "Sprache hinzufügen…"
+
+msgid ""
+"Previous language value: %s — please pick the equivalent from the "
+"suggestions below. This field will be removed in version 1.8.0."
+msgstr ""
+"Vorheriger Sprachwert: %s — bitte die passende Entsprechung aus den "
+"Vorschlägen unten auswählen. Dieses Feld wird in Version 1.8.0 entfernt."
+
+# Sync meta box
+# "Occurrences" and "Status" are already defined in earlier sections.
+msgid "Occurrence sync status"
+msgstr "Termin-Synchronisationsstatus"
+
+msgid ""
+"This talk has no linked translations yet. Once you link translations via the"
+" Multisite Language Switcher meta box, occurrence lists will sync "
+"automatically across them."
+msgstr ""
+"Für diesen Vortrag sind noch keine Übersetzungen verknüpft. Sobald du "
+"Übersetzungen über die Multisite-Language-Switcher-Box verknüpfst, werden "
+"die Terminlisten automatisch synchronisiert."
+
+msgid "this talk"
+msgstr "dieser Vortrag"
+
+msgid "In sync"
+msgstr "Synchron"
+
+msgid "Sibling empty"
+msgstr "Andere Sprachversion leer"
+
+msgid "Diverged"
+msgstr "Abweichend"
+
+msgid "All translations are in sync."
+msgstr "Alle Übersetzungen sind synchron."
+
+msgid "Push to translations"
+msgstr "An Übersetzungen senden"
+
+msgid "Pull from:"
+msgstr "Übernehmen von:"
+
+msgid "Pull"
+msgstr "Übernehmen"
+
+msgid "Merge all"
+msgstr "Alle zusammenführen"
+
+msgid ""
+"Push overwrites all siblings with this talk's list. Pull replaces this "
+"talk's list with the selected sibling's, then propagates. Merge unions all "
+"lists by date + language."
+msgstr ""
+"„An Übersetzungen senden“ überschreibt alle Übersetzungen mit der Liste "
+"dieses Vortrags. „Übernehmen“ ersetzt die Liste dieses Vortrags mit der "
+"ausgewählten Übersetzung und verbreitet sie anschließend. „Zusammenführen“ "
+"vereinigt alle Listen anhand von Datum und Sprache."
+
+msgid "Security check failed."
+msgstr "Sicherheitsprüfung fehlgeschlagen."
+
+msgid "Missing post."
+msgstr "Beitrag fehlt."
+
+msgid "You do not have permission to edit this talk."
+msgstr "Du hast keine Berechtigung, diesen Vortrag zu bearbeiten."
+
+msgid "Invalid post."
+msgstr "Ungültiger Beitrag."
+
+# 1.7.0 — Sync meta box JS feedback
+msgid "Working…"
+msgstr "Wird ausgeführt…"
+
+msgid "Done. Reloading…"
+msgstr "Erledigt. Seite wird neu geladen…"
+
+msgid "The action could not be completed."
+msgstr "Die Aktion konnte nicht abgeschlossen werden."
+
+msgid "Missing post ID."
+msgstr "Beitrags-ID fehlt."
+
+msgid "QR Code"
+msgstr "QR-Code"
+
+msgid "Download SVG"
+msgstr "SVG herunterladen"
+
+msgid "Close"
+msgstr "Schließen"

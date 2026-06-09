@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Personal_Profile_Builder\Admin;
 
+use Personal_Profile_Builder\MSLS_Integration;
 use Personal_Profile_Builder\Post_Types;
 
 /**
@@ -60,5 +61,38 @@ final class Talk_Meta_Boxes {
 			'personal-profile-builder',
 			PERSONAL_PROFILE_BUILDER_DIR . '/languages'
 		);
+		\wp_localize_script(
+			'ppb-talk-sidebar',
+			'PPBTalkSidebar',
+			[
+				'localeChoices' => self::format_locale_choices_for_js(),
+			]
+		);
+	}
+	
+	/**
+	 * Format the locale choices for the SelectControl `options` prop.
+	 *
+	 * Returns a list of `{ label, value }` objects with an empty
+	 * first entry so the user can clear the field.
+	 *
+	 * @return	array<int,array<string,string>> Options list
+	 */
+	private static function format_locale_choices_for_js(): array {
+		$options = [
+			[
+				'label' => \__( '— No language —', 'personal-profile-builder' ),
+				'value' => '',
+			],
+		];
+		
+		foreach ( MSLS_Integration::locale_choices() as $code => $label ) {
+			$options[] = [
+				'label' => $label,
+				'value' => $code,
+			];
+		}
+		
+		return $options;
 	}
 }

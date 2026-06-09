@@ -40,6 +40,28 @@ final class Meta {
 	}
 	
 	/**
+	 * Register runtime hooks that act on meta updates.
+	 *
+	 * Separate from {@see register()} because that method runs on
+	 * `init` and registers the meta keys themselves; the runtime
+	 * hooks here listen for changes to those keys at any time.
+	 */
+	public static function init_runtime_hooks(): void {
+		\add_action(
+			'updated_post_meta',
+			[ self::class, 'clear_legacy_on_resolution' ],
+			10,
+			4
+		);
+		\add_action(
+			'added_post_meta',
+			[ self::class, 'clear_legacy_on_resolution' ],
+			10,
+			4
+		);
+	}
+	
+	/**
 	 * Register meta keys for the `talk` post type.
 	 */
 	private static function register_talk_meta(): void {
@@ -116,7 +138,28 @@ final class Meta {
 			[
 				'type' => 'string',
 				'description' => \__(
-					'Language the talk is given in.',
+					'Languages this talk is given in. Stored as one row per WordPress locale code (e.g. de_DE). Free-form values from versions prior to 1.7.0 are preserved in _talk_language_legacy. Exposed to the REST API as the synthesised `talk_languages` field on the talk endpoint.',
+					'personal-profile-builder'
+				),
+				'single' => false,
+				'show_in_rest' => false,
+				'auth_callback' => [
+					self::class,
+					'auth_edit_post',
+				],
+				'sanitize_callback' => [
+					self::class,
+					'sanitize_locale_or_empty',
+				],
+			]
+		);
+		\register_post_meta(
+			$post_type,
+			'_talk_language_legacy',
+			[
+				'type' => 'string',
+				'description' => \__(
+					'Deprecated. Previous free-form value of _talk_language preserved on upgrade. Will be removed in 1.8.0.',
 					'personal-profile-builder'
 				),
 				'single' => true,
@@ -392,7 +435,7 @@ final class Meta {
 				? \sanitize_text_field( $row['date'] )
 				: '';
 			
-			if ( $date === '' ) {
+			if ( $date === '' || Occurrences::compact_date( $date ) === '' ) {
 				continue;
 			}
 			
@@ -417,6 +460,10 @@ final class Meta {
 				'recording_url' => isset( $row['recording_url'] )
 					&& \is_string( $row['recording_url'] )
 					? \esc_url_raw( $row['recording_url'] )
+					: '',
+				'language' => isset( $row['language'] )
+					&& \is_string( $row['language'] )
+					? self::sanitize_locale_or_empty( $row['language'] )
 					: '',
 			];
 		}
@@ -470,5 +517,76 @@ final class Meta {
 		}
 		
 		return $value;
+	}
+	
+	/**
+	 * Sanitise a locale code, returning empty for any non-locale input.
+	 *
+	 * Used by both the per-occurrence `language` field and the
+	 * talk-level `_talk_language` meta key. The allowed set is
+	 * whatever {@see MSLS_Integration::allowed_locales()} returns —
+	 * MSLS-linked subsite locales when MSLS is available, otherwise
+	 * installed WordPress languages plus `en_US`.
+	 *
+	 * Anything that does not match a known locale collapses to an
+	 * empty string. The empty string is itself a valid stored value
+	 * representing "unspecified".
+	 *
+	 * @param	mixed	$value Raw input value
+	 * @return	string A known locale code, or empty string
+	 */
+	public static function sanitize_locale_or_empty( $value ): string {
+		if ( ! \is_string( $value ) ) {
+			return '';
+		}
+		
+		$value = \trim( $value );
+		
+		if ( $value === '' ) {
+			return '';
+		}
+		
+		$allowed = MSLS_Integration::allowed_locales();
+		
+		return \in_array( $value, $allowed, true ) ? $value : '';
+	}
+	
+	/**
+	 * Clear `_talk_language_legacy` when `_talk_language` is set.
+	 *
+	 * Hooked into `updated_post_meta` and `added_post_meta`. When the
+	 * user picks one or more locales from the multi-select, the
+	 * temporary legacy hint is no longer needed and is removed so
+	 * the notice disappears on the next editor load. A save that
+	 * empties the field is a no-op — the user can clear without
+	 * losing the legacy hint.
+	 *
+	 * Because `_talk_language` is registered with `single => false`,
+	 * the hook fires once per individual row. Picking two locales
+	 * fires this twice; both fires reach the same `delete_post_meta`
+	 * call, which is idempotent. No special handling needed.
+	 *
+	 * @param	int	$meta_id ID of the updated metadata entry
+	 * @param	int	$post_id The post the meta belongs to
+	 * @param	string	$meta_key The meta key being changed
+	 * @param	mixed	$meta_value The new meta value
+	 */
+	public static function clear_legacy_on_resolution(
+		int $meta_id,
+		int $post_id,
+		string $meta_key,
+		$meta_value
+	): void {
+		unset( $meta_id );
+		
+		if ( $meta_key !== '_talk_language' ) {
+			return;
+		}
+		
+		if ( ! \is_string( $meta_value ) || $meta_value === '' ) {
+			return;
+		}
+		
+		\delete_post_meta( $post_id, '_talk_language_legacy' );
 	}
 }

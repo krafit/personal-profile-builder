@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Personal_Profile_Builder\Admin;
 
 use Personal_Profile_Builder\Meta;
+use Personal_Profile_Builder\MSLS_Integration;
 use Personal_Profile_Builder\Post_Types;
 use WP_Query;
 
@@ -160,6 +161,7 @@ final class List_Table_Filters {
 				$out['ppb_status'] = \__( 'Status', 'personal-profile-builder' );
 				$out['ppb_occurrence_count'] = \__( 'Occurrences', 'personal-profile-builder' );
 				$out['ppb_next_date'] = \__( 'Next date', 'personal-profile-builder' );
+				$out['ppb_languages'] = \__( 'Languages', 'personal-profile-builder' );
 			}
 		}
 		
@@ -203,6 +205,23 @@ final class List_Table_Filters {
 						$next . ' 00:00:00'
 					)
 				);
+				
+				return;
+			case 'ppb_languages':
+				$languages = self::collect_occurrence_languages( $post_id );
+				
+				if ( $languages === [] ) {
+					echo '<span aria-hidden="true">&#x2014;</span>';
+					echo '<span class="screen-reader-text">'
+						. \esc_html__(
+							'No languages set',
+							'personal-profile-builder'
+						) . '</span>';
+					
+					return;
+				}
+				
+				echo \esc_html( \implode( ', ', $languages ) );
 				
 				return;
 		}
@@ -302,5 +321,57 @@ final class List_Table_Filters {
 		}
 		
 		return $decoded;
+	}
+	
+	/**
+	 * Collect the unique locale names across a talk's occurrences.
+	 *
+	 * Returns a list of human-readable language names (e.g.
+	 * `"English", "Deutsch"`) sorted alphabetically. Locales that
+	 * don't resolve to a name (because they're not in the current
+	 * site's installed languages) fall back to the raw code.
+	 *
+	 * @param	int	$post_id Post ID
+	 * @return	array<int,string> Sorted, deduplicated language names
+	 */
+	private static function collect_occurrence_languages( int $post_id ): array {
+		$rows = self::read_occurrences( $post_id );
+		
+		if ( $rows === [] ) {
+			return [];
+		}
+		
+		$names = [];
+		
+		foreach ( $rows as $row ) {
+			if ( ! \is_array( $row ) ) {
+				continue;
+			}
+			
+			$locale = isset( $row['language'] ) && \is_string( $row['language'] )
+				? $row['language']
+				: '';
+			
+			if ( $locale === '' ) {
+				continue;
+			}
+			
+			$name = MSLS_Integration::locale_name( $locale );
+			
+			if ( $name === '' ) {
+				continue;
+			}
+			
+			$names[ $name ] = true;
+		}
+		
+		if ( $names === [] ) {
+			return [];
+		}
+		
+		$out = \array_keys( $names );
+		\sort( $out );
+		
+		return $out;
 	}
 }

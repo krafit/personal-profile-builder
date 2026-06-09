@@ -202,6 +202,18 @@ final class Query_Helpers {
 			return [];
 		}
 		
+		// Drop any non-array rows so the typed callbacks below are safe.
+		$rows = \array_filter(
+			$rows,
+			function ( $row ): bool {
+				return \is_array( $row );
+			}
+		);
+		
+		if ( $rows === [] ) {
+			return [];
+		}
+		
 		$today = \current_time( 'Y-m-d' );
 		
 		if ( $filter === 'upcoming' ) {
